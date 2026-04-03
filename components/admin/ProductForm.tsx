@@ -250,18 +250,52 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <CardTitle>Images</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Input
-              placeholder="URL de l'image (ex: https://res.cloudinary.com/...)"
-              value={newImageUrl}
-              onChange={(e) => setNewImageUrl(e.target.value)}
-              onKeyDown={(e) =>
-                e.key === "Enter" && (e.preventDefault(), addImage())
-              }
+              type="file"
+              accept="image/*"
+              className="flex-1"
+              id="image-upload"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                try {
+                  toast({
+                    title: "Téléchargement en cours...",
+                    description: "Veuillez patienter pendant l'envoi de l'image.",
+                  });
+                  
+                  const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  
+                  if (!uploadRes.ok) throw new Error("Erreur lors de l'upload");
+                  
+                  const data = await uploadRes.json();
+                  if (data.url) {
+                    setImages([...images, data.url]);
+                    toast({
+                      title: "Succès",
+                      description: "Image ajoutée avec succès.",
+                    });
+                  }
+                } catch (error: any) {
+                  toast({
+                    title: "Erreur",
+                    description: error.message || "Impossible d'uploader l'image",
+                    variant: "destructive",
+                  });
+                } finally {
+                  // Reset input
+                  e.target.value = "";
+                }
+              }}
             />
-            <Button type="button" variant="outline" onClick={addImage}>
-              <Plus className="h-4 w-4" />
-            </Button>
           </div>
 
           {images.length > 0 && (
@@ -297,7 +331,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           {images.length === 0 && (
             <div className="border-2 border-dashed rounded-lg p-8 text-center text-muted-foreground">
               <Upload className="h-8 w-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Ajoutez des URLs d&apos;images Cloudinary</p>
+              <p className="text-sm">Ajoutez des images depuis votre ordinateur</p>
             </div>
           )}
         </CardContent>
