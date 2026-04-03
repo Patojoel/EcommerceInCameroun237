@@ -49,9 +49,9 @@ jobs:
     needs: lint
     env:
       # Dummy env vars for build (no DB connection needed for static analysis)
-      DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+      DATABASE_URL: "postgresql://neondb_owner:npg_6hfZzbial4jN@ep-polished-mode-alql3sqw-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
       NEXTAUTH_SECRET: "ci-build-secret-placeholder-value-1234567890"
-      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_URL: "https://ecommerce-incameroun237.vercel.app"
       STRIPE_SECRET_KEY: "sk_test_placeholder"
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_placeholder"
       STRIPE_WEBHOOK_SECRET: "whsec_placeholder"
@@ -60,7 +60,7 @@ jobs:
       CLOUDINARY_API_SECRET: "placeholder"
       RESEND_API_KEY: "re_placeholder"
       EMAIL_FROM: "noreply@placeholder.com"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+      NEXT_PUBLIC_APP_URL: "https://ecommerce-incameroun237.vercel.app"
       NEXT_PUBLIC_APP_NAME: "EcommerceInCameroun237"
     steps:
       - name: 📥 Checkout code
