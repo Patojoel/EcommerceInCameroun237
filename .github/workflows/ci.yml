@@ -8,6 +8,8 @@ on:
 
 env:
   NODE_VERSION: '18'
+  # Dummy DATABASE_URL so Prisma generate and validate don't fail missing env var
+  DATABASE_URL: "postgresql://neondb_owner:npg_6hfZzbial4jN@ep-polished-mode-alql3sqw-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 jobs:
   # ──────────────────────────────────────────
