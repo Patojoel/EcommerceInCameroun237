@@ -88,7 +88,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    console.error("Checkout error:", error);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    console.error("Checkout error:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    return NextResponse.json({ 
+      error: "Erreur serveur",
+      message: error instanceof Error ? error.message : "Inconnu" 
+    }, { status: 500 });
   }
 }
