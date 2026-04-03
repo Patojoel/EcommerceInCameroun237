@@ -10,6 +10,10 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 │   ├── 📁 ISSUE_TEMPLATE/
 │   │   ├── bug_report.md          # Template rapport de bug
 │   │   └── feature_request.md     # Template demande de fonctionnalité
+│   ├── 📁 workflows/
+│   │   ├── ci.yml                 # Pipeline CI (lint, build, type-check)
+│   │   └── deploy.yml             # Déploiement auto Vercel + health checks
+│   ├── CODEOWNERS                 # Propriétaires du code par répertoire
 │   └── pull_request_template.md   # Template Pull Request
 │
 ├── 📁 app/                        # App Router Next.js 14
@@ -45,15 +49,25 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 │   │   └── customers/page.tsx
 │   │
 │   ├── 📁 api/                    # Routes API
-│   │   ├── auth/[...nextauth]/route.ts
-│   │   ├── products/route.ts
-│   │   ├── orders/route.ts
-│   │   ├── cart/route.ts
-│   │   └── webhook/stripe/route.ts
+│   │   ├── auth/
+│   │   │   ├── [...nextauth]/route.ts  # NextAuth handler
+│   │   │   └── register/route.ts       # Inscription
+│   │   ├── products/
+│   │   │   ├── route.ts           # GET (liste) + POST (créer)
+│   │   │   └── [id]/route.ts      # GET + PUT + DELETE
+│   │   ├── orders/
+│   │   │   ├── route.ts           # GET (liste) + POST (créer)
+│   │   │   └── [id]/route.ts      # GET + PATCH (statut)
+│   │   ├── checkout/route.ts      # POST → Stripe Checkout
+│   │   ├── upload/route.ts        # POST → Cloudinary upload
+│   │   └── webhook/stripe/route.ts # Webhook Stripe
 │   │
-│   ├── layout.tsx                 # Layout racine
+│   ├── layout.tsx                 # Layout racine (+ Analytics + SpeedInsights)
 │   ├── not-found.tsx
 │   ├── error.tsx
+│   ├── loading.tsx
+│   ├── sitemap.ts                 # Sitemap dynamique
+│   ├── robots.ts                  # robots.txt
 │   └── globals.css
 │
 ├── 📁 components/
@@ -75,16 +89,19 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 │   │   ├── CartItem.tsx
 │   │   └── CheckoutForm.tsx
 │   │
-│   └── 📁 admin/
-│       ├── AdminNav.tsx
-│       ├── ProductForm.tsx
-│       └── OrderTable.tsx
+│   ├── 📁 admin/
+│   │   ├── AdminNav.tsx
+│   │   ├── ProductForm.tsx
+│   │   └── OrderTable.tsx
+│   │
+│   └── providers.tsx              # Providers (Session, etc.)
 │
 ├── 📁 lib/
 │   ├── prisma.ts                  # Client Prisma
 │   ├── stripe.ts                  # Config Stripe
 │   ├── auth.ts                    # Config NextAuth
 │   ├── cloudinary.ts              # Config Cloudinary
+│   ├── resend.ts                  # Config Resend (emails)
 │   └── utils.ts                   # Fonctions utilitaires
 │
 ├── 📁 hooks/
@@ -101,6 +118,9 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 │   ├── seed.ts                    # Données de test
 │   └── 📁 migrations/
 │
+├── 📁 scripts/
+│   └── pre-deploy-check.sh        # Vérification pré-déploiement
+│
 ├── 📁 public/
 │   ├── 📁 images/
 │   ├── favicon.ico
@@ -114,9 +134,11 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 │
 ├── 📁 docs/                       # Documentation
 │   ├── STRUCTURE.md               # Ce fichier
-│   ├── DEPLOYMENT.md
-│   ├── TECHNICAL_SPEC.md
-│   └── DATABASE_SCHEMA.md
+│   ├── DEPLOYMENT.md              # Guide de déploiement Vercel
+│   ├── TECHNICAL_SPEC.md          # Spécifications techniques
+│   ├── DATABASE_SCHEMA.md         # Schéma de la BDD
+│   ├── API_REFERENCE.md           # Documentation des endpoints API
+│   └── SECURITY.md                # Politique de sécurité
 │
 ├── .env.example                   # Template variables d'environnement
 ├── .env.local                     # Variables locales (ignoré par Git)
@@ -124,6 +146,7 @@ Arborescence complète du projet e-commerce Next.js 14 (App Router).
 ├── next.config.js
 ├── tailwind.config.ts
 ├── tsconfig.json
+├── middleware.ts                   # Protection des routes
 ├── package.json
 ├── README.md
 ├── ROADMAP.md

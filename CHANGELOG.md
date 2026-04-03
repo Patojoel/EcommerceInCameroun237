@@ -9,7 +9,30 @@ Versionnage selon [Semantic Versioning](https://semver.org/lang/fr/).
 ## [Unreleased]
 
 ### En cours
-- Déploiement production
+- Configuration production (BDD, Stripe live, domaine)
+
+---
+
+## [0.2.0] — 2026-04-03
+
+### Ajouté — Phase 7 : Déploiement Production
+- Pipeline CI/CD GitHub Actions (`.github/workflows/ci.yml`)
+  - Jobs : Lint, TypeScript type-check, Build, Prisma validate
+- Workflow de déploiement automatique Vercel (`.github/workflows/deploy.yml`)
+  - Health checks post-déploiement (homepage, API, sitemap, robots.txt)
+- Script de vérification pré-déploiement (`scripts/pre-deploy-check.sh`)
+  - Vérification fichiers essentiels, .gitignore, env, Prisma, TS, ESLint, sécurité, build, audit npm
+- Intégration Vercel Analytics + Speed Insights
+- Documentation API complète (`docs/API_REFERENCE.md`) — tous les endpoints documentés
+- Politique de sécurité (`docs/SECURITY.md`) — mesures en place, checklist, bonnes pratiques
+- Fichier CODEOWNERS (`.github/CODEOWNERS`)
+- Scripts npm : `type-check`, `pre-deploy`
+
+### Modifié
+- `app/layout.tsx` — Ajout composants `<Analytics />` et `<SpeedInsights />`
+- `package.json` — Ajout dépendances `@vercel/analytics`, `@vercel/speed-insights`
+- `ROADMAP.md` — Phase 7 restructurée avec sous-sections détaillées
+- `docs/STRUCTURE.md` — Mise à jour avec nouveaux fichiers et dossiers
 
 ---
 

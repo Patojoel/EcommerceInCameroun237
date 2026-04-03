@@ -92,14 +92,29 @@ Suivi de l'avancement du projet, phase par phase.
 ## Phase 7 — Déploiement Production 🌍
 **Durée estimée : 1–2 jours**
 
+### Infrastructure CI/CD ✅
+- [x] Pipeline CI GitHub Actions (lint, type-check, build, Prisma validate)
+- [x] Workflow de déploiement automatique Vercel
+- [x] Health checks post-déploiement automatisés
+- [x] CODEOWNERS configuré
+- [x] Script de vérification pré-déploiement (`scripts/pre-deploy-check.sh`)
+- [x] Vercel Analytics + Speed Insights intégrés
+
+### Documentation production ✅
+- [x] Documentation API complète (`docs/API_REFERENCE.md`)
+- [x] Politique de sécurité (`docs/SECURITY.md`)
+- [x] Mise à jour STRUCTURE.md avec nouveaux fichiers
+- [x] CHANGELOG mis à jour
+
+### Configuration production (manuelle) ⏳
 - [ ] BDD de production configurée (Neon / Supabase)
 - [ ] Variables d'environnement Vercel configurées
 - [ ] Migrations Prisma appliquées en prod
 - [ ] Clés Stripe live configurées
 - [ ] Webhook Stripe pointant sur le domaine de prod
 - [ ] Domaine personnalisé configuré
+- [ ] Secrets GitHub configurés (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`)
 - [ ] Checklist post-déploiement validée
-- [ ] Monitoring Vercel Analytics activé
 
 ---
 

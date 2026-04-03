@@ -1,0 +1,31 @@
+# =============================================
+# CODEOWNERS — EcommerceInCameroun237
+# =============================================
+# Chaque modification dans ces répertoires
+# requiert une approbation des propriétaires listés.
+#
+# Syntaxe : chemin   @utilisateur-ou-equipe
+# Docs : https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+# =============================================
+
+# --- Propriétaire par défaut (tout le projet) ---
+*                               @patojoel
+
+# --- Infrastructure critique ---
+prisma/                         @patojoel
+middleware.ts                   @patojoel
+next.config.js                  @patojoel
+.github/                        @patojoel
+
+# --- API & Backend ---
+app/api/                        @patojoel
+lib/                            @patojoel
+
+# --- Admin ---
+app/admin/                      @patojoel
+components/admin/               @patojoel
+
+# --- Configuration ---
+.env.example                    @patojoel
+package.json                    @patojoel
+tsconfig.json                   @patojoel
