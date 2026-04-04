@@ -57,6 +57,7 @@ jobs:
       STRIPE_WEBHOOK_SECRET: "whsec_placeholder"
       CLOUDINARY_CLOUD_NAME: "placeholder"
       CLOUDINARY_API_KEY: "placeholder"
+      GOOGLE_SHEET_WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbxXU0LsATSppctUevugu_D6BtqIOwunA3kWIZyUQ39ZsE2zuwJZNMY9ejOBJ1DtQLfj/exec"
       CLOUDINARY_API_SECRET: "placeholder"
       RESEND_API_KEY: "re_placeholder"
       EMAIL_FROM: "noreply@placeholder.com"

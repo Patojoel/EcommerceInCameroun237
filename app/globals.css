@@ -70,6 +70,10 @@
   * {
     @apply border-border;
   }
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
   body {
     @apply bg-background text-foreground;
   }
@@ -103,3 +107,155 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+/* ============================================
+   Rich Text Editor (Admin - Quill)
+   ============================================ */
+.rich-text-editor-wrapper .ql-toolbar {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-color: hsl(var(--border));
+  background: hsl(var(--muted) / 0.3);
+}
+
+.rich-text-editor-wrapper .ql-container {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  border-color: hsl(var(--border));
+  min-height: 200px;
+  font-size: 0.95rem;
+}
+
+.rich-text-editor-wrapper .ql-editor {
+  min-height: 200px;
+}
+
+.rich-text-editor-wrapper .ql-editor.ql-blank::before {
+  color: hsl(var(--muted-foreground));
+  font-style: normal;
+}
+
+/* ============================================
+   Rich Content Renderer (Shop - Affichage)
+   ============================================ */
+.rich-content-renderer .ql-editor {
+  overflow-x: hidden;
+  overflow-y: visible;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.rich-content-renderer .ql-editor p {
+  margin-bottom: 0.75rem;
+  line-height: 1.75;
+}
+
+.rich-content-renderer .ql-editor h1,
+.rich-content-renderer .ql-editor h2,
+.rich-content-renderer .ql-editor h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.rich-content-renderer .ql-editor h1 {
+  font-size: 1.75rem;
+}
+
+.rich-content-renderer .ql-editor h2 {
+  font-size: 1.4rem;
+}
+
+.rich-content-renderer .ql-editor h3 {
+  font-size: 1.15rem;
+}
+
+.rich-content-renderer .ql-editor strong {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.rich-content-renderer .ql-editor em {
+  font-style: italic;
+}
+
+.rich-content-renderer .ql-editor ul,
+.rich-content-renderer .ql-editor ol {
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.rich-content-renderer .ql-editor ul li {
+  list-style-type: disc;
+}
+
+.rich-content-renderer .ql-editor ol li {
+  list-style-type: decimal;
+}
+
+.rich-content-renderer .ql-editor li {
+  margin-bottom: 0.25rem;
+  line-height: 1.6;
+}
+
+.rich-content-renderer .ql-editor blockquote {
+  border-left: 4px solid hsl(var(--primary));
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+  background: hsl(var(--muted) / 0.3);
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding: 0.75rem 1rem;
+}
+
+.rich-content-renderer .ql-editor pre {
+  background: hsl(var(--muted));
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.rich-content-renderer .ql-editor a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.2s;
+}
+
+.rich-content-renderer .ql-editor a:hover {
+  opacity: 0.8;
+}
+
+/* Images dans le contenu riche */
+.rich-content-renderer .ql-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Vidéos responsives (iframe YouTube, etc.) */
+.rich-content-renderer .ql-editor .ql-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rich-content-renderer .ql-editor iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+

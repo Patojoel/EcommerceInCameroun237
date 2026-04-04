@@ -9,7 +9,7 @@ import { Loader2, Upload, X, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { RichTextEditor } from "@/components/ui/RichTextEditor";
 import {
   Select,
   SelectContent,
@@ -167,18 +167,13 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description *</Label>
-            <Textarea
-              id="description"
-              placeholder="Décrivez le produit..."
-              rows={4}
-              {...register("description")}
+            <RichTextEditor
+              label="Description"
+              value={watch("description")}
+              onChange={(value) => setValue("description", value, { shouldValidate: true })}
+              placeholder="Décrivez le produit en détail (texte, images, vidéos)..."
+              error={errors.description?.message}
             />
-            {errors.description && (
-              <p className="text-sm text-destructive">
-                {errors.description.message}
-              </p>
-            )}
           </div>
 
           <div className="grid grid-cols-3 gap-4">

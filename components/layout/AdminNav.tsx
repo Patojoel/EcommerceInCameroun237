@@ -10,6 +10,7 @@ import {
   Settings,
   ChevronRight,
   LogOut,
+  MessageSquare,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,11 @@ const adminNavLinks = [
     href: "/admin/customers",
     label: "Clients",
     icon: Users,
+  },
+  {
+    href: "/admin/reviews",
+    label: "Avis Clients",
+    icon: MessageSquare,
   },
 ];
 

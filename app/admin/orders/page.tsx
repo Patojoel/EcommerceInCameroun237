@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import {
   formatPrice,
@@ -6,7 +7,9 @@ import {
   getStatusLabel,
   getStatusColor,
 } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { UpdateOrderStatus } from "@/components/admin/UpdateOrderStatus";
+import { Eye } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Commandes — Administration",
@@ -90,10 +93,18 @@ export default async function AdminOrdersPage() {
                     </span>
                   </td>
                   <td className="p-4 text-right">
-                    <UpdateOrderStatus
-                      orderId={order.id}
-                      currentStatus={order.status}
-                    />
+                    <div className="flex items-center justify-end gap-2">
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link href={`/admin/orders/${order.id}`}>
+                          <Eye className="h-3 w-3 mr-1" />
+                          Détail
+                        </Link>
+                      </Button>
+                      <UpdateOrderStatus
+                        orderId={order.id}
+                        currentStatus={order.status}
+                      />
+                    </div>
                   </td>
                 </tr>
               );

@@ -7,7 +7,12 @@ import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { DirectOrderForm } from "@/components/shop/DirectOrderForm";
 import { ProductCard } from "@/components/shop/ProductCard";
+import { RichContentRenderer } from "@/components/shop/RichContentRenderer";
+import { ReviewSection } from "@/components/shop/ReviewSection";
+import { BulkOrderCTA } from "@/components/shop/BulkOrderCTA";
+import { FakeSalesNotification } from "@/components/shop/FakeSalesNotification";
 import { ArrowLeft, Package, Shield, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -18,7 +23,11 @@ interface ProductPageProps {
 async function getProduct(slug: string) {
   return prisma.product.findUnique({
     where: { slug },
-    include: { category: true },
+    include: {
+      category: true,
+      bundles: { where: { isActive: true }, orderBy: { createdAt: "desc" } },
+      reviews: { where: { isApproved: true }, orderBy: { createdAt: "desc" } },
+    },
   });
 }
 
@@ -73,7 +82,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   );
 
   return (
-    <div className="container py-8">
+    <div className="container py-4 sm:py-8">
+      {/* Fake Sales Notification */}
+      <FakeSalesNotification />
+
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8 flex-wrap">
         <Link href="/" className="hover:text-foreground transition-colors">
@@ -170,33 +182,41 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <h1 className="text-3xl font-bold leading-tight">{product.name}</h1>
 
-          <div className="flex items-center gap-4 flex-wrap">
-            <span className="text-4xl font-bold text-primary">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-2 mb-6">
+            <span className="text-5xl sm:text-6xl font-black text-primary tracking-tight drop-shadow-sm">
               {formatPrice(product.price)}
             </span>
-            {product.stock > 0 ? (
-              <Badge variant="success">
-                En stock ({product.stock} disponible
-                {product.stock > 1 ? "s" : ""})
-              </Badge>
-            ) : (
-              <Badge variant="destructive">Rupture de stock</Badge>
-            )}
+            <div className="mt-1 sm:mt-0">
+              {product.stock > 0 ? (
+                <Badge variant="success" className="text-sm px-3 py-1 shadow-sm border-0 w-fit">
+                  ✅ En stock ({product.stock} disponible{product.stock > 1 ? "s" : ""})
+                </Badge>
+              ) : (
+                <Badge variant="destructive" className="text-sm px-3 py-1 shadow-sm border-0 w-fit">
+                  ❌ Rupture de stock
+                </Badge>
+              )}
+            </div>
+          </div>
+
+          <Separator />
+          {/* Formulaire de commande directe */}
+          <DirectOrderForm product={product} bundles={product.bundles} />
+          <Separator />
+          <div className="bg-muted/10 p-4 sm:p-6 rounded-2xl border border-muted-foreground/10">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Description</h2>
+            <div className="prose prose-sm sm:prose-base dark:prose-invert max-w-full w-full overflow-hidden break-words">
+              <RichContentRenderer
+                content={product.description}
+                className="text-muted-foreground leading-relaxed text-base sm:text-lg break-words"
+              />
+            </div>
           </div>
 
           <Separator />
 
-          <div>
-            <h2 className="font-semibold mb-3">Description</h2>
-            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-              {product.description}
-            </p>
-          </div>
-
-          <Separator />
-
-          {/* Add to Cart */}
-          <AddToCartButton product={product} />
+          {/* Add to Cart
+          <AddToCartButton product={product} /> */}
 
           {/* Guarantees */}
           <div className="grid grid-cols-3 gap-4 pt-2">
@@ -219,7 +239,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </p>
             </div>
           </div>
+
+          <Separator />
+
+          {/* Commande en Gros CTA */}
+          <BulkOrderCTA productName={product.name} />
         </div>
+      </div>
+
+      {/* Avis et Témoignages */}
+      <div className="mt-16">
+        <Separator className="mb-10" />
+        <ReviewSection productId={product.id} reviews={product.reviews} />
       </div>
 
       {/* Related Products */}

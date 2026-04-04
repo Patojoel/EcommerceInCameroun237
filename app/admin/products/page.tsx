@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
-import { Plus, Pencil } from "lucide-react";
+import { Plus, Pencil, Eye } from "lucide-react";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
 
 export const metadata: Metadata = {
@@ -105,6 +105,12 @@ export default async function AdminProductsPage() {
                 </td>
                 <td className="p-4">
                   <div className="flex items-center justify-end gap-2">
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/admin/products/${product.id}`}>
+                        <Eye className="h-3 w-3 mr-1" />
+                        Voir
+                      </Link>
+                    </Button>
                     <Button variant="outline" size="sm" asChild>
                       <Link href={`/admin/products/${product.id}/edit`}>
                         <Pencil className="h-3 w-3 mr-1" />
