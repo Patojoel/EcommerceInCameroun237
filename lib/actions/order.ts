@@ -17,7 +17,8 @@ export async function submitDirectOrder(data: DirectOrderData) {
   try {
     const totalAmount = data.bundlePrice ?? data.price * data.quantity;
 
-    const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+    const rawWebhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+    const webhookUrl = rawWebhookUrl ? rawWebhookUrl.replace(/^["']|["']$/g, "").trim() : undefined;
 
     if (webhookUrl) {
       console.log("Envoi des données au Google Sheet...", {
