@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -296,12 +297,15 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           {images.length > 0 && (
             <div className="grid grid-cols-3 gap-3">
               {images.map((img, idx) => (
-                <div key={idx} className="relative group">
-                  <img
+                <div key={idx} className="relative group w-full aspect-square rounded-lg border overflow-hidden">
+                  <Image
                     src={img}
                     alt={`Image ${idx + 1}`}
-                    className="w-full aspect-square object-cover rounded-lg border"
+                    fill
+                    className="object-cover"
                     onError={(e) => {
+                      // Note: onError might not work exactly the same with next/image, 
+                      // but it takes a synthetic event. A safe fallback can be handled.
                       (e.target as HTMLImageElement).src =
                         "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect fill='%23eee' width='100' height='100'/></svg>";
                     }}

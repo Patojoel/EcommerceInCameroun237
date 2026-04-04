@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   formatPrice,
@@ -97,11 +98,14 @@ export default async function OrdersPage() {
                   >
                     <div className="h-10 w-10 rounded-lg bg-muted flex-shrink-0 overflow-hidden">
                       {item.product.images[0] ? (
-                        <img
-                          src={item.product.images[0]}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover"
-                        />
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={item.product.images[0]}
+                            alt={item.product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="flex items-center justify-center h-full text-lg">
                           🛍️

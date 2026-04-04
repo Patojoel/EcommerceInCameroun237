@@ -25,7 +25,7 @@ export function FakeSalesNotification() {
         description: (
           <div className="flex flex-col gap-1 mt-1">
             <span className="text-sm">
-              <span className="font-semibold">{name}</span> de <span className="font-semibold">{city}</span> vient d'acheter cet article.
+              <span className="font-semibold">{name}</span> de <span className="font-semibold">{city}</span> vient d&apos;acheter cet article.
             </span>
             <span className="text-xs text-muted-foreground">Il y a {timeAgo} min</span>
           </div>
