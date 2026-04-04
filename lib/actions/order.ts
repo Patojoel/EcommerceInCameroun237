@@ -40,6 +40,7 @@ export async function submitDirectOrder(data: DirectOrderData) {
           telephone: data.customerPhone,
           adresse: data.customerAddress,
           ville: data.customerCity,
+          bundle: data.bundleName ?? "—",
           status: "Commande non confirmer",
         }),
       });
