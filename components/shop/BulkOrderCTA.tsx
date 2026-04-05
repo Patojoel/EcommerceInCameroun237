@@ -9,8 +9,8 @@ interface BulkOrderCTAProps {
 }
 
 export function BulkOrderCTA({ productName }: BulkOrderCTAProps) {
-  const whatsappNumber = "+237600000000"; // Vous pourrez changer ce numéro dans .env plus tard
-  const emailAddress = "contact@votre-boutique.com"; 
+  const whatsappNumber = "+237689984367"; 
+  const emailAddress = "joelpatoh0@gmail.com"; 
   const defaultMessage = `Bonjour, je souhaite commander le produit "${productName}" en grande quantité. Pouvez-vous me donner plus d'informations sur vos prix de gros ?`;
 
   const handleWhatsApp = () => {

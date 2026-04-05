@@ -126,11 +126,11 @@ export function DirectOrderForm({ product, bundles = [] }: DirectOrderFormProps)
   return (
     <Card className="border-2 border-primary/20 shadow-lg bg-primary/5">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-xl">
-          <Truck className="h-6 w-6 text-primary" />
-          Achat Rapide (Paiement à la livraison)
+        <CardTitle className="flex items-center gap-2 text-base sm:text-lg md:text-xl">
+          <Truck className="h-5 w-5 sm:h-6 sm:w-6 text-primary flex-shrink-0" />
+          <span className="leading-tight">Achat Rapide <span className="hidden xs:inline">(Paiement à la livraison)</span></span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-xs sm:text-sm">
           Remplissez ce formulaire pour commander ce produit immédiatement.
         </CardDescription>
       </CardHeader>
@@ -229,29 +229,29 @@ export function DirectOrderForm({ product, bundles = [] }: DirectOrderFormProps)
           </div>
 
           <div className="pt-4 border-t space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               {/* Quantity — disabled when bundle selected */}
-              <div className="flex items-center gap-3">
-                <Label>Quantité</Label>
-                <div className="flex items-center border rounded-md h-9">
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                <Label className="text-xs sm:text-sm">Quantité</Label>
+                <div className="flex items-center border rounded-md h-8 sm:h-9">
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-r-none"
+                    className="h-7 w-7 sm:h-8 sm:w-8 rounded-r-none"
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     disabled={quantity <= 1 || isSubmitting || !!selectedBundle}
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
-                  <span className="w-8 text-center text-sm font-medium">
+                  <span className="w-7 sm:w-8 text-center text-xs sm:text-sm font-medium">
                     {displayQuantity}
                   </span>
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 rounded-l-none"
+                    className="h-7 w-7 sm:h-8 sm:w-8 rounded-l-none"
                     onClick={() =>
                       setQuantity(Math.min(product.stock, quantity + 1))
                     }
@@ -265,16 +265,16 @@ export function DirectOrderForm({ product, bundles = [] }: DirectOrderFormProps)
                   </Button>
                 </div>
                 {selectedBundle && (
-                  <span className="text-xs text-primary font-medium">
+                  <span className="text-[10px] sm:text-xs text-primary font-medium">
                     📦 {selectedBundle.name}
                   </span>
                 )}
               </div>
-              <div className="text-right">
-                <span className="text-sm text-muted-foreground mr-2">
+              <div className="text-right self-end sm:self-auto">
+                <span className="text-xs sm:text-sm text-muted-foreground mr-1 sm:mr-2">
                   Total:
                 </span>
-                <span className="text-xl font-bold text-primary">
+                <span className="text-lg sm:text-xl font-bold text-primary">
                   {formatPrice(totalPrice)}
                 </span>
               </div>
@@ -282,22 +282,22 @@ export function DirectOrderForm({ product, bundles = [] }: DirectOrderFormProps)
           </div>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="px-4 sm:px-6">
         <Button
           type="submit"
           form="direct-order-form"
           disabled={isSubmitting || product.stock === 0}
-          className="w-full h-12 text-lg font-bold transition-all hover:scale-[1.02] shadow-primary/20"
+          className="w-full h-10 sm:h-11 md:h-12 text-xs sm:text-sm md:text-base lg:text-lg font-bold transition-all hover:scale-[1.02] shadow-primary/20"
         >
           {isSubmitting ? (
             <div className="flex items-center gap-2">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-              Traitement...
+              <div className="h-3 w-3 sm:h-4 sm:w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+              <span className="text-xs sm:text-sm">Traitement...</span>
             </div>
           ) : (
             <>
-              <ShoppingBag className="mr-2 h-5 w-5" />
-              JE COMMANDE MAINTENANT
+              <ShoppingBag className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+              <span>JE COMMANDE MAINTENANT</span>
             </>
           )}
         </Button>

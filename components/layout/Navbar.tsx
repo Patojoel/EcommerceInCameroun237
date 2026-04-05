@@ -60,7 +60,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           {/* Search */}
           <Button variant="ghost" size="icon" asChild>
-            <Link href="/products?search=true">
+            <Link href="/products">
               <Search className="h-5 w-5" />
             </Link>
           </Button>

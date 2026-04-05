@@ -13,6 +13,7 @@ import { RichContentRenderer } from "@/components/shop/RichContentRenderer";
 import { ReviewSection } from "@/components/shop/ReviewSection";
 import { BulkOrderCTA } from "@/components/shop/BulkOrderCTA";
 import { FakeSalesNotification } from "@/components/shop/FakeSalesNotification";
+import { LiveStockIndicator } from "@/components/shop/LiveStockIndicator";
 import { ArrowLeft, Package, Shield, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -26,7 +27,7 @@ async function getProduct(slug: string) {
     include: {
       category: true,
       bundles: { where: { isActive: true }, orderBy: { createdAt: "desc" } },
-      reviews: { where: { isApproved: true }, orderBy: { createdAt: "desc" } },
+      reviews: { where: { isApproved: true, rating: { gte: 3 } }, orderBy: { createdAt: "desc" } },
     },
   });
 }
@@ -180,23 +181,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           )}
 
-          <h1 className="text-3xl font-bold leading-tight">{product.name}</h1>
+          <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold leading-tight">{product.name}</h1>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mt-2 mb-6">
-            <span className="text-5xl sm:text-6xl font-black text-primary tracking-tight drop-shadow-sm">
-              {formatPrice(product.price)}
-            </span>
-            <div className="mt-1 sm:mt-0">
-              {product.stock > 0 ? (
-                <Badge variant="success" className="text-sm px-3 py-1 shadow-sm border-0 w-fit">
-                  ✅ En stock ({product.stock} disponible{product.stock > 1 ? "s" : ""})
-                </Badge>
-              ) : (
-                <Badge variant="destructive" className="text-sm px-3 py-1 shadow-sm border-0 w-fit">
-                  ❌ Rupture de stock
-                </Badge>
-              )}
+          <div className="flex flex-col gap-3 mt-2 mb-6">
+            <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4">
+              <span className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-primary tracking-tight drop-shadow-sm">
+                {formatPrice(product.price)}
+              </span>
+              <div className="mt-0.5 xs:mt-0">
+                {product.stock > 0 ? (
+                  <Badge variant="success" className="text-[11px] xs:text-xs sm:text-sm px-2 xs:px-3 py-0.5 xs:py-1 shadow-sm border-0 w-fit">
+                    ✅ En stock
+                  </Badge>
+                ) : (
+                  <Badge variant="destructive" className="text-[11px] xs:text-xs sm:text-sm px-2 xs:px-3 py-0.5 xs:py-1 shadow-sm border-0 w-fit">
+                    ❌ Rupture de stock
+                  </Badge>
+                )}
+              </div>
             </div>
+            {/* Live Stock Indicator */}
+            {product.stock > 0 && (
+              <LiveStockIndicator initialStock={product.stock} />
+            )}
           </div>
 
           <Separator />
@@ -267,7 +274,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </Button>
             )}
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 sm:gap-5 md:gap-6">
             {relatedProducts.map((p: (typeof relatedProducts)[number]) => (
               <ProductCard key={p.id} product={p} />
             ))}

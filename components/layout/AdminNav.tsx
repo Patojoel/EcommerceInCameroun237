@@ -43,6 +43,11 @@ const adminNavLinks = [
     label: "Avis Clients",
     icon: MessageSquare,
   },
+  {
+    href: "/admin/settings",
+    label: "Thème & Réglages",
+    icon: Settings,
+  },
 ];
 
 export function AdminNav() {

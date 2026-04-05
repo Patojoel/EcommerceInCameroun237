@@ -21,15 +21,13 @@ import { formatPrice } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import Link from "next/link";
+import { submitBulkDirectOrder } from "@/lib/actions/order";
 
 const checkoutSchema = z.object({
   name: z.string().min(2, "Nom requis"),
-  email: z.string().email("Email invalide"),
   phone: z.string().min(8, "Téléphone requis"),
   address: z.string().min(5, "Adresse requise"),
   city: z.string().min(2, "Ville requise"),
-  postalCode: z.string().min(2, "Code postal requis"),
-  country: z.string().default("Cameroun"),
 });
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
@@ -51,7 +49,7 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: { country: "Cameroun" },
+    defaultValues: { name: "", phone: "", address: "", city: "" },
   });
 
   if (items.length === 0) {
@@ -72,35 +70,28 @@ export default function CheckoutPage() {
   const onSubmit = async (data: CheckoutFormData) => {
     setIsProcessing(true);
     try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((item) => ({
-            productId: item.productId,
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image,
-          })),
-          shippingAddress: data,
-        }),
+      const result = await submitBulkDirectOrder({
+        items: items.map((item) => ({
+          productId: item.productId,
+          productName: item.name,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        customerName: data.name,
+        customerPhone: data.phone,
+        customerAddress: data.address,
+        customerCity: data.city,
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        if (error.error === "Non authentifié") {
-          router.push("/login?callbackUrl=/checkout");
-          return;
-        }
-        throw new Error(error.error || "Erreur lors de la commande");
-      }
-
-      const { url } = await response.json();
-
-      if (url) {
+      if (result.success) {
+        toast({
+          title: "Commandes enregistrées ! 🎉",
+          description: result.message,
+        });
         clearCart();
-        window.location.href = url;
+        router.push("/checkout/success");
+      } else {
+        throw new Error(result.message);
       }
     } catch (error) {
       toast({
@@ -142,33 +133,18 @@ export default function CheckoutPage() {
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="phone">Téléphone *</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      placeholder="jean@exemple.com"
-                      {...register("email")}
+                      id="phone"
+                      placeholder="+237 6XX XXX XXX"
+                      {...register("phone")}
                     />
-                    {errors.email && (
+                    {errors.phone && (
                       <p className="text-sm text-destructive">
-                        {errors.email.message}
+                        {errors.phone.message}
                       </p>
                     )}
                   </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Téléphone *</Label>
-                  <Input
-                    id="phone"
-                    placeholder="+237 6XX XXX XXX"
-                    {...register("phone")}
-                  />
-                  {errors.phone && (
-                    <p className="text-sm text-destructive">
-                      {errors.phone.message}
-                    </p>
-                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -185,42 +161,18 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="city">Ville *</Label>
-                    <Input
-                      id="city"
-                      placeholder="Yaoundé"
-                      {...register("city")}
-                    />
-                    {errors.city && (
-                      <p className="text-sm text-destructive">
-                        {errors.city.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="postalCode">Code postal *</Label>
-                    <Input
-                      id="postalCode"
-                      placeholder="00000"
-                      {...register("postalCode")}
-                    />
-                    {errors.postalCode && (
-                      <p className="text-sm text-destructive">
-                        {errors.postalCode.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
                 <div className="space-y-2">
-                  <Label htmlFor="country">Pays</Label>
+                  <Label htmlFor="city">Ville *</Label>
                   <Input
-                    id="country"
-                    defaultValue="Cameroun"
-                    {...register("country")}
+                    id="city"
+                    placeholder="Yaoundé"
+                    {...register("city")}
                   />
+                  {errors.city && (
+                    <p className="text-sm text-destructive">
+                      {errors.city.message}
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -234,12 +186,12 @@ export default function CheckoutPage() {
               {isProcessing ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Redirection vers le paiement...
+                  Traitement de la commande...
                 </>
               ) : (
                 <>
-                  <Lock className="mr-2 h-5 w-5" />
-                  Payer {formatPrice(totalPrice)} — Stripe sécurisé
+                  <ShoppingBag className="mr-2 h-5 w-5" />
+                  Commander {formatPrice(totalPrice)} (Paiement à la livraison)
                 </>
               )}
             </Button>
@@ -292,10 +244,10 @@ export default function CheckoutPage() {
 
               <div className="text-xs text-muted-foreground space-y-1">
                 <p className="flex items-center gap-1">
-                  🔒 Paiement sécurisé par Stripe
+                  🚚 Paiement à la livraison
                 </p>
                 <p className="flex items-center gap-1">
-                  💳 Visa, Mastercard acceptés
+                  📦 Livraison rapide dans votre ville
                 </p>
               </div>
             </CardContent>

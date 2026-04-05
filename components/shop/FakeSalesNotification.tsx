@@ -3,14 +3,15 @@
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 
-const firstNames = ["Jean", "Marie", "Paul", "Sophie", "Luc", "Emma", "Thomas", "Julie", "Marc", "Alice", "Didier", "Astride", "Christian", "Nathalie"];
-const cities = ["Douala", "Yaoundé", "Bafoussam", "Bamenda", "Kribi", "Garoua", "Maroua", "Edea", "Limbe", "Buea"];
+const firstNames = ["Jean", "Marie", "Paul", "Sophie", "Luc", "Emma", "Thomas", "Julie", "Marc", "Alice", "Didier", "Astride", "Christian", "Nathalie", "Patrick", "Carine", "Samuel", "Estelle"];
+const cities = ["Douala", "Yaoundé", "Bafoussam", "Bamenda", "Kribi", "Garoua", "Maroua", "Edea", "Limbe", "Buea", "Bertoua", "Ngaoundéré"];
+
+const avatarEmojis = ["👤", "👩", "👨", "🧑", "👩‍🦱", "👨‍🦱", "🧑‍🦰", "👩‍🦳"];
 
 export function FakeSalesNotification() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Affiche la première notification après 3 à 8 secondes
     const initialDelay = Math.floor(Math.random() * 5000) + 3000;
     
     let intervalId: NodeJS.Timeout;
@@ -18,26 +19,35 @@ export function FakeSalesNotification() {
     const showNotification = () => {
       const name = firstNames[Math.floor(Math.random() * firstNames.length)];
       const city = cities[Math.floor(Math.random() * cities.length)];
-      const timeAgo = Math.floor(Math.random() * 59) + 1; // 1 à 59 minutes
+      const timeAgo = Math.floor(Math.random() * 30) + 1;
+      const avatar = avatarEmojis[Math.floor(Math.random() * avatarEmojis.length)];
       
       toast({
-        title: "Nouvelle commande ! 🛍️",
+        variant: "sale" as any,
+        title: "🛍️ Nouvelle commande !",
         description: (
-          <div className="flex flex-col gap-1 mt-1">
-            <span className="text-sm">
-              <span className="font-semibold">{name}</span> de <span className="font-semibold">{city}</span> vient d&apos;acheter cet article.
-            </span>
-            <span className="text-xs text-muted-foreground">Il y a {timeAgo} min</span>
+          <div className="flex items-center gap-3 mt-1.5">
+            <div className="flex-shrink-0 w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-lg">
+              {avatar}
+            </div>
+            <div className="flex flex-col gap-0.5 min-w-0">
+              <span className="text-sm leading-tight">
+                <span className="font-bold">{name}</span> de <span className="font-semibold">{city}</span>
+              </span>
+              <span className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                Il y a {timeAgo} min
+              </span>
+            </div>
           </div>
         ),
-        duration: 5000, // Laisser affiché 5 secondes
+        duration: 5000,
       });
     };
 
     const timeoutId = setTimeout(() => {
       showNotification();
       
-      // Ensuite, on affiche aléatoirement toutes les 15 à 35 secondes
       intervalId = setInterval(() => {
         showNotification();
       }, Math.floor(Math.random() * 20000) + 15000);
@@ -50,5 +60,5 @@ export function FakeSalesNotification() {
     };
   }, [toast]);
 
-  return null; // Composant invisible
+  return null;
 }

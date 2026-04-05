@@ -1,14 +1,18 @@
+"use client";
+
 import { Product } from "@/types";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ProductSkeleton } from "@/components/shop/ProductSkeleton";
 import { PackageX } from "lucide-react";
+import { useApiCache } from "@/hooks/useApiCache";
 
 interface ProductGridProps {
   products: (Product & { category?: { name: string; slug: string } })[];
   isLoading?: boolean;
 }
 
-export function ProductGrid({ products, isLoading }: ProductGridProps) {
+export function ProductGrid({ products: serverProducts, isLoading }: ProductGridProps) {
+  const products = useApiCache('shop-products', serverProducts);
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
